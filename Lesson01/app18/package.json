@@ -1,0 +1,19 @@
+{
+  "name": "app18",
+  "version": "1.0.0",
+  "description": "mean express",
+  "main": "app18.js",
+  "scripts": {
+    "start": "node app18.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "mean"
+  ],
+  "author": "Billy",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2"
+  }
+}
