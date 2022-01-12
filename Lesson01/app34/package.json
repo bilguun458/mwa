@@ -1,0 +1,19 @@
+{
+  "name": "app34",
+  "version": "1.0.0",
+  "description": "Mean Games",
+  "main": "app34.js",
+  "scripts": {
+    "start": "node app34.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "MEAN"
+  ],
+  "author": "Bilguun Batnasan",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^11.0.0",
+    "express": "^4.17.2"
+  }
+}
