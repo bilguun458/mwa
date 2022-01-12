@@ -1,52 +1,32 @@
 const http = require("http");
 const fs = require("fs");
 
-let indexFileBuffer;
-let statusCode;
+let statusCode = 200;
 
 const serveAllRequests = function (req, res) {
-    switch (req.url) {
-        case "/json":
-            statusCode = 200;
-            res.setHeader("Content-Type", "application/json");
-            res.writeHead(statusCode);
-            res.end("{'message': 'hello world}");
-            break;
-        case "/":
-            fs.readFile(__dirname + "/index.html", function (err, buffer) {
-                if (err) {
-                    indexFileBuffer = "file not found";
-                    statusCode = 404;
-                } else {
-                    indexFileBuffer = buffer;
-                    statusCode = 200;
-                }
-            });
-            res.setHeader("Content-Type", "text/html");
-            res.writeHead(statusCode);
-            res.end(indexFileBuffer);
-            break;
-
+    if (req.method == "POST") {
+        res.setHeader("Content-Type", "application/json");
+        res.writeHead(statusCode);
+        res.end(JSON.stringify({ 'message': 'POST request received' }));
+    } else {
+        fs.readFile(__dirname + "/public" + req.url, function (err, buffer) {
+            if (err) {
+                fs.readFile(__dirname + "/public/index.html", function (_, indexBuffer) {
+                    res.setHeader("Content-Type", "text/html");
+                    res.writeHead(statusCode);
+                    res.end(indexBuffer)
+                });
+            } else {
+                res.setHeader("Content-Type", "text/html");
+                res.writeHead(statusCode);
+                res.end(buffer);
+            }
+        });
     }
-
-
 }
 
 const server = http.createServer(serveAllRequests);
 
-server.listen(8080, "localhost", function () {
+server.listen(4343, "localhost", function () {
     console.log("Server running");
 })
-// fs.readFile(__dirname + "/index.html", function (err, buffer) {
-//     if (err) {
-//         indexFileBuffer = "file not found";
-//         statusCode = 404;
-//     } else {
-//         indexFileBuffer = buffer;
-//         statusCode = 200;
-//     }
-
-//     server.listen(8080, "localhost", function () {
-//         console.log("Server running");
-//     })
-// });
