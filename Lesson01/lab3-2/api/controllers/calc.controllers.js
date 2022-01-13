@@ -1,4 +1,3 @@
-// const gamesData = require("../data/games.json")
 
 multiply = function (req, res) {
     console.log("multiply invoked")
