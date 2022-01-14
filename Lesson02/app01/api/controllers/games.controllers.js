@@ -4,16 +4,12 @@ const dbConnection = require("../data/dbConnection")
 
 getAll = function (req, res) {
     console.log("GAMES GETALL invoked")
-    let offset = 0
-    let count = 5;
-    if (req.query && req.query.offset) offset = parseInt(req.query.offset);
-    if (req.query && req.query.count) count = parseInt(req.query.count);
-    // console.log("offset + count: " + offset + count);
-    // const pageGames = gamesData.slice(offset, offset + count)
+    let limit = 6;
+    if (req.query && req.query.limit && parseInt(req.query.limit) <= 9) limit = parseInt(req.query.limit);
 
     const db = dbConnection.get();
     const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
-    gamesCollection.find().skip(offset).limit(count).toArray(function (err, games) {
+    gamesCollection.find().limit(limit).toArray(function (err, games) {
         console.log("found games");
         res.status(200).json(games)
     })
@@ -21,9 +17,7 @@ getAll = function (req, res) {
 
 getOne = function (req, res) {
     console.log("GAMES GETONE invoked")
-    // const gameId = req.params.gameId;
-    // const game = gamesData[gameId];
-    // res.status(200).json(game)
+    gameId = req.params.gameId;
     const db = dbConnection.get()
     const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
     gamesCollection.findOne({ _id: ObjectId(gameId) }, function (err, games) {
@@ -33,22 +27,20 @@ getOne = function (req, res) {
 }
 
 addOne = function (req, res) {
-    // console.log("GAMES ADDONE invoked")
-    // console.log(req.body)
-
-    // res.status(200).json(req.body)
     const db = dbConnection.get()
     const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
 
-    if (req.body && req.body.title && req.body.price) {
+    if (req.body && req.body.title && req.body.price && req.body.minPlayers && req.body.minAge) {
         console.log("Body " + req.body);
         const newGame = {
             title: req.body.title,
-            price: parseFloat(req.body.price)
+            price: parseFloat(req.body.price),
+            minPlayers: parseInt(req.body.minPlayers, 10),
+            minAge: parseInt(req.body.minAge, 10)
         }
-        gamesCollection.insertOne(newGame, function (err, games) {
+        gamesCollection.insertOne(newGame, function (err, game) {
             console.log("insert one");
-            res.status(200).json(req.body)
+            res.status(201).json(game)
         })
     } else {
         console.log("Missing data body ");
@@ -56,8 +48,20 @@ addOne = function (req, res) {
     }
 }
 
+remove = function (req, res) {
+    const db = dbConnection.get()
+    const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
+
+    let gameId = req.params.gameId;
+    gamesCollection.deleteOne({ _id: ObjectId(gameId) }, function (err, games) {
+        console.log("delete one");
+        res.status(200).json({ "message": "delete success" })
+    })
+}
+
 module.exports = {
     getAll,
     getOne,
-    addOne
+    addOne,
+    remove,
 }
