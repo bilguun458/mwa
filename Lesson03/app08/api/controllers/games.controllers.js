@@ -1,5 +1,3 @@
-const { ObjectId } = require("mongodb");
-const dbConnection = require("../data/dbConnection")
 const mongoose = require("mongoose")
 
 const Game = mongoose.model(process.env.DB_GAME_MODEL)
@@ -55,47 +53,62 @@ getAll = function (req, res) {
     })
 }
 
-getOne = function (req, res) {
+getOne = function (req, res) { // try to make your methods have one return
     console.log("GAMES GETONE invoked")
     const gameId = req.params.gameId;
 
-    Game.findById(gameId).exec(function (err, game) {
-        console.log("GETONE game found");
-        res.status(200).json(game);
-    })
-}
-
-addOne = function (req, res) {
-    const db = dbConnection.get()
-    const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
-
-    if (req.body && req.body.title && req.body.price && req.body.minPlayers && req.body.minAge) {
-        console.log("Body " + req.body);
-        const newGame = {
-            title: req.body.title,
-            price: parseFloat(req.body.price),
-            minPlayers: parseInt(req.body.minPlayers, 10),
-            minAge: parseInt(req.body.minAge, 10)
-        }
-        gamesCollection.insertOne(newGame, function (err, game) {
-            console.log("insert one");
-            res.status(201).json(game)
+    if (mongoose.isValidObjectId(gameId)) {
+        Game.findById(gameId).exec(function (err, game) {
+            const response = {
+                status: 200,
+                message: game
+            }
+            if (err) {
+                response.status = 500;
+                response.message = err;
+            } else if (!game) {
+                response.status = 404;
+                response.message = { "message": "Game id not match" };
+            }
+            res.status(response.status).json(response.message);
         })
     } else {
-        console.log("Missing data body ");
-        res.status(400).json({ error: "Data missing POST body" })
+        console.log("id not valid");
+        res.status(400).json({ "message": "Game id must be valid id" });
     }
 }
 
-remove = function (req, res) {
-    const db = dbConnection.get()
-    const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
+addOne = function (req, res) {
+    // const db = dbConnection.get()
+    // const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
 
-    let gameId = req.params.gameId;
-    gamesCollection.deleteOne({ _id: ObjectId(gameId) }, function (err, games) {
-        console.log("delete one");
-        res.status(200).json({ "message": "delete success" })
-    })
+    // if (req.body && req.body.title && req.body.price && req.body.minPlayers && req.body.minAge) {
+    //     console.log("Body " + req.body);
+    //     const newGame = {
+    //         title: req.body.title,
+    //         price: parseFloat(req.body.price),
+    //         minPlayers: parseInt(req.body.minPlayers, 10),
+    //         minAge: parseInt(req.body.minAge, 10)
+    //     }
+    //     gamesCollection.insertOne(newGame, function (err, game) {
+    //         console.log("insert one");
+    //         res.status(201).json(game)
+    //     })
+    // } else {
+    //     console.log("Missing data body ");
+    //     res.status(400).json({ error: "Data missing POST body" })
+    // }
+}
+
+remove = function (req, res) {
+    // const db = dbConnection.get()
+    // const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
+
+    // let gameId = req.params.gameId;
+    // gamesCollection.deleteOne({ _id: ObjectId(gameId) }, function (err, games) {
+    //     console.log("delete one");
+    //     res.status(200).json({ "message": "delete success" })
+    // })
 }
 
 module.exports = {

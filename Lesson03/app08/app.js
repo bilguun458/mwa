@@ -3,7 +3,6 @@ const express = require('express')
 const path = require('path')
 require("./api/data/db")
 const routes = require("./api/routes")
-const dbConnection = require("./api/data/dbConnection")
 const app = express()
 
 app.use(function (req, res, next) {
@@ -16,7 +15,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.use("/api", routes);
-dbConnection.open();
 
 const server = app.listen(process.env.PORT, function () {
     console.log(`listening ${server.address().port}`);
