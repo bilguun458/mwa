@@ -1,24 +1,24 @@
 const express = require('express')
 const router = express.Router();
-const gamesController = require("../controllers/games.controllers")
-const publisherController = require("../controllers/publisher.controllers")
-const reviewController = require("../controllers/reviews.controllers")
+const brandsController = require("../controllers/brands.controllers")
+const bikesController = require("../controllers/bikes.controllers")
 
-router.route("/games")
-    .get(gamesController.getAll)
-    .post(gamesController.addOne)
+router.route("/brands")
+    .get(brandsController.getAll)
+    .post(brandsController.addOne)
 
-router.route("/games/:gameId")
-    .get(gamesController.getOne)
-    .delete(gamesController.remove)
+router.route("/brands/:brandId")
+    .get(brandsController.getOne)
+    .delete(brandsController.remove)
+    .put(brandsController.updateFull)
 
-router.route("/games/:gameId/publisher")
-    .get(publisherController.getOne)
+router.route("/brands/:brandId/bikes")
+    .get(bikesController.getAll)
+    .post(bikesController.addOne)
 
-router.route("/games/:gameId/reviews")
-    .get(reviewController.getAll)
-
-router.route("/games/:gameId/reviews/:reviewId")
-    .get(reviewController.getOne)
+router.route("/brands/:brandId/bikes/:bikeId")
+    .get(bikesController.getOne)
+    .delete(bikesController.remove)
+    .put(bikesController.updateFull)
 
 module.exports = router;
