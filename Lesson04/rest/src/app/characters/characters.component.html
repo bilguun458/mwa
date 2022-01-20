@@ -1,0 +1,12 @@
+<ul>
+    <li *ngFor="let character of characters">
+        {{ character.name }}
+        <br />
+        {{ character.gender }}
+        <ul>
+            <li *ngFor="let title of character.titles">
+                {{ title }}
+            </li>
+        </ul>
+    </li>
+</ul>
