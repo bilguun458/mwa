@@ -1,10 +1,25 @@
 <p>games works!</p>
 
-
 <ul>
     <li *ngFor="let game of games">
-        {{game.title}}
-        <br />
-        {{ game.price }}
+        <a routerLink="/game/{{game._id}}">
+            {{game.title}}
+        </a>
     </li>
 </ul>
+
+<br />
+
+Add new Game:
+<br />
+<form>
+    <label>Title</label>
+    <br />
+    <input class="form-control" type="text" id="title" required [(ngModel)]="newGame.title" name="title" />
+    <br />
+    <label>Price</label>
+    <br />
+    <input class="form-control" type="number" id="price" required [(ngModel)]="newGame.price" name="price" />
+    <br />
+    <button (click)="save()" class="btn btn-success">Add Game</button>
+</form>

@@ -1,0 +1,18 @@
+<div *ngIf="game !== undefined">
+    <h1>{{game.title}}</h1>
+    Price: {{ game.price | currency }}
+    <!-- | piping -->
+    <br />
+    Year: {{ game.year }}
+    <br />
+    year : {{ game.year }}
+    <br />
+    rate : {{ game.rate }}
+    <br />
+    minPlayers : {{ game.minPlayers }}
+    <br />
+    maxPlayers : {{ game.maxPlayers }}
+    <br />
+    minAge : {{ game.minAge }}
+    <br />
+</div>
