@@ -1,0 +1,15 @@
+<div *ngIf="job !== undefined">
+    <h1>{{job.title}}</h1>
+    Price: {{ job.salary | currency }}
+    <!-- | piping -->
+    <br />
+    Year: {{ job.description }}
+    <br />
+    year : {{ job.experience }}
+    <br />
+    rate : {{ job.postDate }}
+    <br />
+    <br />
+
+    <button (click)="delete()" class="btn btn-warning">Remove job</button>
+</div>

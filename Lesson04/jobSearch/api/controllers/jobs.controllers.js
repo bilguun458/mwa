@@ -91,11 +91,12 @@ const addOne = function (req, res) {
         salary: parseFloat(req.body.salary, 10),
         experience: req.body.experience,
         skills: req.body.skills,
-        postDate: req.body.postDate,
-        location: { coordinates: [parseFloat(req.body.lat, 10), parseFloat(req.body.lng, 10)] }
+        postDate: req.body.postDate
     }
+    if (req.body.lat && req.body.lng) newJob.location = { coordinates: [parseFloat(req.body.lat, 10), parseFloat(req.body.lng, 10)] }
 
     Job.create(newJob, function (err, job) {
+        console.log(job);
         response = { status: 201, message: job }
         if (err) {
             response.status = 500;

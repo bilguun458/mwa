@@ -1,0 +1,19 @@
+<li *ngFor="let job of jobs">
+    <a routerLink="/job/{{job._id}}">
+        {{job.title}}
+    </a>
+</li>
+
+Add new Job:
+<br />
+<form>
+    <label>Title</label>
+    <br />
+    <input class="form-control" type="text" id="title" required [(ngModel)]="newJob.title" name="title" />
+    <br />
+    <label>Salary</label>
+    <br />
+    <input class="form-control" type="number" id="salary" required [(ngModel)]="newJob.salary" name="salary" />
+    <br />
+    <button (click)="save()" class="btn btn-success">Add Job</button>
+</form>
