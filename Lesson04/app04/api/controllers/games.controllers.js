@@ -6,7 +6,7 @@ const _runGeoQuery = function (req, res) {
     const lng = parseFloat(req.query.lng);
     const lat = parseFloat(req.query.lat);
 
-    const point = { type: "Point", coordinates: { lng, lat } }
+    const point = { type: "Point", coordinates: [lng, lat] }
     const query = {
         "publisher.location.coordinates": {
             $near: {
@@ -15,10 +15,10 @@ const _runGeoQuery = function (req, res) {
                 $minDistance: parseFloat(process.env.GEO_SEARCHING_MIN_DISTANCE, 10)
             }
         }
-    }
+    };
     Game.find(query).limit(parseInt(process.env.DEFAULT_LIMIT, 10)).exec(function (err, games) {
         if (err) {
-            console.log("Games found error");
+            console.log("Games found error: ", err);
             res.status(500).json(err);
         } else {
             console.log("Games found latitude");
@@ -30,7 +30,10 @@ const _runGeoQuery = function (req, res) {
 
 const getAll = function (req, res) {
     console.log("GAMES GETALL invoked")
-    if (req.query && req.query.lat && req.query.lng) _runGeoQuery(req, res);
+    if (req.query && req.query.lat && req.query.lng) {
+        _runGeoQuery(req, res);
+        return;
+    }
 
     let limit = parseInt(process.env.DEFAULT_LIMIT, 10)
     let maxCount = parseInt(process.env.MAX_LIMIT, 10)

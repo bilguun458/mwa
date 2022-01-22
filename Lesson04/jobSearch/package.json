@@ -1,0 +1,17 @@
+{
+  "name": "jobsearch",
+  "version": "1.0.0",
+  "description": "Job search app",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
+  },
+  "author": "Bilguun",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "mongoose": "^6.1.7"
+  }
+}
