@@ -3,25 +3,35 @@ const mongoose = require("mongoose")
 const Job = mongoose.model(process.env.DB_JOB_MODEL)
 
 const _runGeoquery = function (req, res) {
-    const lat = parseFloat(req.body.lat, 10)
-    const lng = parseFloat(req.body.lng, 10)
+    const lat = parseFloat(req.query.lat, 10)
+    const lng = parseFloat(req.query.lng, 10)
 
     const point = {
         type: "Point",
         coordinates: [lng, lat]
     }
     const query = {
-        "location.coordinates": point,
-        $near: {
-            $geometry: point,
-            $minDistance: parseFloat(process.env.GEO_SEARCHING_MIN_DISTANCE, 10),
-            $maxDistance: parseFloat(process.env.GEO_SEARCHING_MAX_DISTANCE, 10)
+        "location.coordinates": {
+            $near: {
+                $geometry: point,
+                $minDistance: parseFloat(process.env.GEO_SEARCHING_MIN_DISTANCE, 10),
+                $maxDistance: parseFloat(process.env.GEO_SEARCHING_MAX_DISTANCE, 10)
+            }
         }
     }
+
+    Job.find(query).limit(parseInt(process.env.DEFAULT_LIMIT, 10)).exec(function (err, jobs) {
+        if (err) {
+            console.log(err);
+            res.status(500).json(err);
+        } else {
+            res.status(200).json(jobs);
+        }
+    })
 }
 
 const getAll = function (req, res) {
-    if (req.query.lat && req.query.lng) {
+    if (req.query && req.query.lat && req.query.lng) {
         _runGeoquery(req, res)
         return;
     }
