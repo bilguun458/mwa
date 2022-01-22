@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from "@angular/router"
-import { GamesDataService } from '../games-data.service';
+import { Location } from '@angular/common';
 
+import { GamesDataService } from '../games-data.service';
 import { Game } from '../games/games.component';
 
 @Component({
@@ -13,7 +14,7 @@ export class GameComponent implements OnInit {
   game!: Game;
   id!: string;
 
-  constructor(private route: ActivatedRoute, private gameService: GamesDataService) { }
+  constructor(private route: ActivatedRoute, private gameService: GamesDataService, private _location: Location) { }
 
   ngOnInit(): void {
     this.id = this.route.snapshot.params["id"];
@@ -28,5 +29,11 @@ export class GameComponent implements OnInit {
 
   private _errorHandler(err: any) {
     console.log("error from game: ", err);
+  }
+
+  public delete(): void {
+    this.gameService.deleteOne(this.id)
+      .then(() => this._location.back())
+      .catch((err: any) => this._errorHandler(err))
   }
 }

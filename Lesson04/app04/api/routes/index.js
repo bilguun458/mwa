@@ -10,6 +10,8 @@ router.route("/games")
 
 router.route("/games/:gameId")
     .get(gamesController.getOne)
+    .put(gamesController.fullUpdateOne)
+    .patch(gamesController.partialUpdateOne)
     .delete(gamesController.remove)
 
 router.route("/games/:gameId/publisher")

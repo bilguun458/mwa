@@ -28,7 +28,7 @@ const _runGeoQuery = function (req, res) {
     })
 }
 
-getAll = function (req, res) {
+const getAll = function (req, res) {
     console.log("GAMES GETALL invoked")
     if (req.query && req.query.lat && req.query.lng) _runGeoQuery(req, res);
 
@@ -42,7 +42,7 @@ getAll = function (req, res) {
         res.status(400).json({ "message": "count is greater than max limit " + maxCount })
     }
 
-    Game.find().limit(limit).exec(function (err, games) {
+    Game.find().sort({ title: -1 }).limit(limit).exec(function (err, games) {
         if (err) {
             console.log("Games found error");
             res.status(500).json(err);
@@ -53,7 +53,7 @@ getAll = function (req, res) {
     })
 }
 
-getOne = function (req, res) { // try to make your methods have one return
+const getOne = function (req, res) { // try to make your methods have one return
     console.log("GAMES GETONE invoked")
     const gameId = req.params.gameId;
 
@@ -78,7 +78,7 @@ getOne = function (req, res) { // try to make your methods have one return
     }
 }
 
-addOne = function (req, res) {
+const addOne = function (req, res) {
     const newGame = {
         title: req.body.title,
         year: req.body.year,
@@ -108,15 +108,106 @@ addOne = function (req, res) {
     });
 }
 
-remove = function (req, res) {
-    // const db = dbConnection.get()
-    // const gamesCollection = db.collection(process.env.DB_GAMES_COLLECTION)
+const remove = function (req, res) {
+    const gameId = req.params.gameId;
+    Game.findByIdAndDelete(gameId).exec(function (err, deletedGame) {
+        const response = { status: 204, message: deletedGame };
+        if (err) {
+            console.log("Error finding brand");
+            response.status = 500;
+            response.message = err;
+        } else if (!deletedGame) {
+            console.log("Brand id not found");
+            response.status = 404;
+            response.message = {
+                "message": "Brand ID not found"
+            };
+        }
+        res.status(response.status).json(response.message);
+    });
+}
 
-    // let gameId = req.params.gameId;
-    // gamesCollection.deleteOne({ _id: ObjectId(gameId) }, function (err, games) {
-    //     console.log("delete one");
-    //     res.status(200).json({ "message": "delete success" })
-    // })
+const updateOne = function (req, res, callback) {
+    const gameId = req.params.gameId;
+
+    if (mongoose.isValidObjectId(gameId)) {
+        Game.findById(gameId).exec(function (err, game) {
+            const response = {
+                status: 204,
+                message: game
+            }
+            if (err) {
+                response.status = 500;
+                response.message = err;
+            } else if (!game) {
+                response.status = 404;
+                response.message = { "message": "Game id not match" };
+            }
+
+            if (response.status !== 204) {
+                res.status(response.status).json(response.message);
+            } else {
+                callback(req, res, game, response);
+            }
+        })
+    } else {
+        console.log("id not valid");
+        res.status(400).json({ "message": "Game id must be valid id" });
+    }
+}
+
+const fullUpdateOne = function (req, res) {
+    const gameUpdate = function (req, res, game, response) {
+        game.title = req.body.title;
+        game.year = req.body.year;
+        game.rate = req.body.rate;
+        game.price = req.body.price;
+        game.minPlayers = req.body.minPlayers;
+        game.maxPlayers = req.body.maxPlayers;
+        game.minAge = req.body.minAge;
+        game.designers = [req.body.designer];
+        if (req.body.name)
+            game.publisher = { name: req.body.name };
+        else
+            game.publisher = { name: "noname" };
+        game.reviews = []
+
+        game.save(function (err, updatedGame) {
+            if (err) {
+                response.status = 500;
+                response.status = err
+            }
+            response.message = updatedGame;
+            res.status(response.status).json(response.updatedGame);
+        })
+    }
+    updateOne(req, res, gameUpdate)
+}
+
+const partialUpdateOne = function (req, res) {
+    const gameUpdate = function (req, res, game, response) {
+        if (req.body.title) { game.title = req.body.title; }
+        if (req.body.year) { game.year = req.body.year; }
+        if (req.body.rate) { game.rate = req.body.rate; }
+        if (req.body.price) { game.price = req.body.price; }
+        if (req.body.minPlayers) { game.minPlayers = req.body.minPlayers; }
+        if (req.body.maxPlayers) { game.maxPlayers = req.body.maxPlayers; }
+        if (req.body.minAge) { game.minAge = req.body.minAge; }
+        if (req.body.designer) { game.designers = [req.body.designer]; }
+        if (req.body.name) { game.publisher = { name: req.body.name }; }
+        else { game.publisher = { name: "noname" }; }
+        game.reviews = []
+
+        game.save(function (err, updatedGame) {
+            if (err) {
+                response.status = 500;
+                response.status = err
+            }
+            response.message = updatedGame;
+            res.status(response.status).json(response.updatedGame);
+        })
+    }
+    updateOne(req, res, gameUpdate)
 }
 
 module.exports = {
@@ -124,4 +215,6 @@ module.exports = {
     getOne,
     addOne,
     remove,
+    fullUpdateOne,
+    partialUpdateOne,
 }

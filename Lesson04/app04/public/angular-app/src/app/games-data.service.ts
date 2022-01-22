@@ -26,7 +26,14 @@ export class GamesDataService {
 
   public addGame(game: Game): Promise<Game> {
     let url: string = `${this.baseUrl}/games`;
-    return this.http.post(url, game).toPromise()
+    return this.http.post(url, { title: game.title, price: game.price }).toPromise()
+      .then(response => response as Game)
+      .catch(this.handleGameError);
+  }
+
+  public deleteOne(id: string): Promise<Game> {
+    let url: string = `${this.baseUrl}/games/${id}`;
+    return this.http.delete(url).toPromise()
       .then(response => response as Game)
       .catch(this.handleGameError);
   }
