@@ -1,0 +1,8 @@
+<h1>School - Students</h1>
+
+<br />
+<ul>
+    <li *ngFor="let stud of students, let i = index">
+        <a routerLink="/student/{{i}}">{{stud.name}}</a>
+    </li>
+</ul>
