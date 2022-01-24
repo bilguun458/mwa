@@ -1,0 +1,19 @@
+<div *ngIf="bike !== undefined">
+    <h2>Model:
+        <input class="form-control" type="text" id="model" required [(ngModel)]="bike.model" name="model" />
+    </h2>
+    <h4>Price:
+        <input class="form-control" type="number" id="price" required [(ngModel)]="bike.price" name="price" />
+    </h4>
+    <h4>Weight:
+        <input class="form-control" type="number" id="weight" required [(ngModel)]="bike.weight" name="weight" />
+    </h4>
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row"><button (click)="update()" class="btn btn-success">Update</button></th>
+                <td><button (click)="delete()" class="btn btn-warning">Delete</button></td>
+            </tr>
+        </tbody>
+    </table>
+</div>

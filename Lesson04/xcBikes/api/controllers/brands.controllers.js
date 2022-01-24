@@ -14,8 +14,12 @@ const getAll = function (req, res) {
         console.log("count is greater than max limit");
         res.status(400).json({ "message": "count is greater than max limit " + maxCount })
     }
+    let query = {};
+    if (req.query && req.query.keyword !== "") {
+        query = { title: { $regex: req.query.keyword } }
+    }
 
-    Brand.find().limit(limit).exec(function (err, brands) {
+    Brand.find(query).limit(limit).exec(function (err, brands) {
         if (err) {
             console.log("brand found error");
             res.status(500).json(err);

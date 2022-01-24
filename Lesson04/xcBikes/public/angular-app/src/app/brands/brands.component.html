@@ -1,0 +1,25 @@
+<h1>Cross Country Bike Brands</h1>
+
+<input name="keyword" id="keyword" class="form-input" [(ngModel)]="keyword" type="text" />
+<button class="btn btn-primary " (click)="searchKeyword()">Search</button>
+<br />
+<br />
+<ul>
+    <li *ngFor="let brand of brands">
+        <a routerLink="/bikes/{{brand._id}}">{{brand.title}}</a>
+    </li>
+</ul>
+
+Add new Brand:
+<br />
+<form>
+    <label>Title</label>
+    <br />
+    <input class="form-control" type="text" id="title" required [(ngModel)]="newBrand.title" name="title" />
+    <br />
+    <label>Year</label>
+    <br />
+    <input class="form-control" type="number" id="year" required [(ngModel)]="newBrand.year" name="year" />
+    <br />
+    <button (click)="save()" class="btn btn-success">Add Brand</button>
+</form>

@@ -1,0 +1,41 @@
+<div *ngIf="brand !== undefined">
+    <h2>
+        Brand:
+        <input class="form-control" type="text" id="title" required [(ngModel)]="brand.title" name="model" />
+    </h2>
+    <h4>Founded:
+        <input class="form-control" type="number" id="year" required [(ngModel)]="brand.year" name="model" />
+    </h4>
+
+    Bikes:
+    <ul>
+        <li *ngFor="let bike of bikes">
+            <a routerLink="/brand/{{brand._id}}/bike/{{bike._id}}">{{bike.model}}</a>
+        </li>
+    </ul>
+</div>
+<table class="table table-hover">
+    <tbody>
+        <tr>
+            <th scope="row"><button (click)="update()" class="btn btn-success">Update</button></th>
+            <td><button (click)="delete()" class="btn btn-warning">Delete</button></td>
+        </tr>
+    </tbody>
+</table>
+Add new Bike:
+<br />
+<form>
+    <label>Model</label>
+    <br />
+    <input class="form-control" type="text" id="model" required [(ngModel)]="newBike.model" name="model" />
+    <br />
+    <label>Price</label>
+    <br />
+    <input class="form-control" type="number" id="price" required [(ngModel)]="newBike.price" name="price" />
+    <br />
+    <label>Weight</label>
+    <br />
+    <input class="form-control" type="number" id="weight" required [(ngModel)]="newBike.weight" name="weight" />
+    <br />
+    <button (click)="save()" class="btn btn-success">Add Bike</button>
+</form>
