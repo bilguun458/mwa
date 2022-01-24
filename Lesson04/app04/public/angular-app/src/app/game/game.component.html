@@ -18,4 +18,21 @@
     <br />
 
     <button (click)="delete()" class="btn btn-warning">Remove game</button>
+
+    <br />
+    <form>
+        <label>Title</label>
+        <br />
+        <input class="form-control" type="text" id="title" required [(ngModel)]="game.title" name="title" />
+        <br />
+        <label>Price</label>
+        <br />
+        <input class="form-control" type="number" id="price" required [(ngModel)]="game.price" name="price" />
+        <br />
+        <label>Year</label>
+        <br />
+        <input class="form-control" type="text" id="year" required [(ngModel)]="game.year" name="year" />
+        <br />
+        <button (click)="edit()" class="btn btn-success">Edit Game</button>
+    </form>
 </div>

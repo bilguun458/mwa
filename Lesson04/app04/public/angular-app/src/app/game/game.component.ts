@@ -36,4 +36,10 @@ export class GameComponent implements OnInit {
       .then(() => this._location.back())
       .catch((err: any) => this._errorHandler(err))
   }
+
+  public edit(): void {
+    this.gameService.editPartial(this.game, this.id)
+      .then(() => this._location.back())
+      .catch((err: any) => this._errorHandler(err))
+  }
 }

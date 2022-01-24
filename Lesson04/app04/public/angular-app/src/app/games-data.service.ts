@@ -31,6 +31,13 @@ export class GamesDataService {
       .catch(this.handleGameError);
   }
 
+  public editPartial(game: Game, id: String): Promise<Game> {
+    let url: string = `${this.baseUrl}/games/${id}`;
+    return this.http.patch(url, { title: game.title, price: game.price, year: game.year }).toPromise()
+      .then(response => response as Game)
+      .catch(this.handleGameError);
+  }
+
   public deleteOne(id: string): Promise<Game> {
     let url: string = `${this.baseUrl}/games/${id}`;
     return this.http.delete(url).toPromise()

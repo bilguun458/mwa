@@ -16,6 +16,7 @@ export class Game {
   get price() { return this.#price }
   set price(price: number) { this.#price = price }
   get year() { return this.#year }
+  set year(year: string) { this.#year = year }
   get rate() { return this.#rate }
   get minPlayers() { return this.#minPlayers }
   get maxPlayers() { return this.#maxPlayers }
