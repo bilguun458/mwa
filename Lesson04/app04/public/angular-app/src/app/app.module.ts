@@ -11,6 +11,7 @@ import { HomeComponent } from './home/home.component';
 import { GamesComponent } from './games/games.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { GameComponent } from './game/game.component';
+import { CopyrightPipe } from './copyright.pipe';
 
 @NgModule({
   declarations: [
@@ -21,6 +22,7 @@ import { GameComponent } from './game/game.component';
     GamesComponent,
     ErrorPageComponent,
     GameComponent,
+    CopyrightPipe,
   ],
   imports: [
     BrowserModule,
