@@ -12,6 +12,8 @@ import { GamesComponent } from './games/games.component';
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { GameComponent } from './game/game.component';
 import { CopyrightPipe } from './copyright.pipe';
+import { ParentComponent } from './parent/parent.component';
+import { ChildComponent } from './child/child.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +25,8 @@ import { CopyrightPipe } from './copyright.pipe';
     ErrorPageComponent,
     GameComponent,
     CopyrightPipe,
+    ParentComponent,
+    ChildComponent,
   ],
   imports: [
     BrowserModule,

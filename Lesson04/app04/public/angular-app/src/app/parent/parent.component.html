@@ -1,0 +1,7 @@
+<p>parent works!</p>
+parent y = <input type="number" name="y" [(ngModel)]="y" name="y" />
+<br />
+parent x = <input type="number" name="x" [(ngModel)]="x" name="x" />
+<br />
+parent z = {{z}}
+<app-child [x]="x" [y]="y" (addEvent)="displayAdd($event)"></app-child>
