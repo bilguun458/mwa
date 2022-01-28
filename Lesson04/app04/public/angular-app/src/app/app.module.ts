@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from "@angular/router"
 import { HttpClientModule } from '@angular/common/http'
 import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { FooterComponent } from './footer/footer.component';
@@ -14,6 +15,7 @@ import { GameComponent } from './game/game.component';
 import { CopyrightPipe } from './copyright.pipe';
 import { ParentComponent } from './parent/parent.component';
 import { ChildComponent } from './child/child.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -27,11 +29,13 @@ import { ChildComponent } from './child/child.component';
     CopyrightPipe,
     ParentComponent,
     ChildComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([{
       path: "",
       component: HomeComponent
@@ -43,6 +47,10 @@ import { ChildComponent } from './child/child.component';
     {
       path: "game/:id",
       component: GameComponent
+    },
+    {
+      path: "register",
+      component: RegisterComponent
     },
     {
       path: "**",
