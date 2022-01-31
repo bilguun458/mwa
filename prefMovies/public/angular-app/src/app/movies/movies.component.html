@@ -3,3 +3,14 @@
         <a routerLink="/movie/{{movie._id}}">{{ movie.title }}</a>
     </li>
 </ul>
+
+<form #movieCreateForm="ngForm" (ngSubmit)="onSubmit(movieCreateForm)">
+    <input type="text" name="title" id="title" placeholder="Title" ngModel>
+    <br />
+    <input type="text" name="poster" id="poster" placeholder="poster" ngModel>
+    <br />
+    <input type="number" name="year" id="year" placeholder="year" ngModel>
+    <br />
+
+    <button type="submit">Create Movie</button>
+</form>

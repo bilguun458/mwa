@@ -7,6 +7,7 @@ import { AppComponent } from './app.component';
 import { ErrorPAgeComponent } from './error-page/error-page.component';
 import { MoviesComponent } from './movies/movies.component';
 import { MovieComponent } from './movie/movie.component';
+import { FormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { MovieComponent } from './movie/movie.component';
   imports: [
     BrowserModule,
     HttpClientModule,
+    FormsModule,
     RouterModule.forRoot([{
       path: "",
       component: MoviesComponent

@@ -11,7 +11,7 @@ const getAll = function (req, res) {
 
     if (limit > maxCount) res.status(400).json({ "msg": "limit exceeded!" })
 
-    Movie.find().limit(limit).exec(function (err, movies) {
+    Movie.find().limit(limit).sort({ _id: -1 }).exec(function (err, movies) {
         console.log("movies found");
         const resp = {
             status: 200,
@@ -21,6 +21,30 @@ const getAll = function (req, res) {
         if (err) {
             resp.status = 500
             resp.msg = "Movies not found"
+        }
+
+        res.status(resp.status).json(resp.msg)
+    })
+}
+
+const addOne = function (req, res) {
+    if (!req.body || !req.body.title || !req.body.year || !req.body.poster) res.status(400).json({ "msg": "req body not valid!" })
+    const _movie = {
+        title: req.body.title,
+        year: req.body.year,
+        poster: req.body.poster,
+    }
+
+    Movie.create(_movie, function (err, movie) {
+        console.log("movies create");
+        const resp = {
+            status: 200,
+            msg: movie
+        }
+
+        if (err) {
+            resp.status = 500
+            resp.msg = "Movie create error"
         }
 
         res.status(resp.status).json(resp.msg)
@@ -78,5 +102,5 @@ const deleteOne = function (req, res) {
 }
 
 module.exports = {
-    getAll, getOne, deleteOne
+    getAll, getOne, deleteOne, addOne
 }

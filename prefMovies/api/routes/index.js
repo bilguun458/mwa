@@ -4,6 +4,7 @@ const moviesController = require("../controllers/movies.controllers")
 
 router.route("/movies")
     .get(moviesController.getAll)
+    .post(moviesController.addOne)
 
 router.route("/movies/:id")
     .get(moviesController.getOne)

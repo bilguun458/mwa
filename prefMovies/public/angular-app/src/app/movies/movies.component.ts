@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { MoviesService } from '../movies.service';
 
 export class Movie {
@@ -15,11 +16,24 @@ export class Movie {
 })
 export class MoviesComponent implements OnInit {
   movies!: Movie[];
+
+  @ViewChild('movieCreateForm')
+  movieCreateForm!: NgForm
+
   constructor(private moviesService: MoviesService) {
-    this.moviesService.getAll().then((res) => this.handleSuccess(res)).catch((err) => this.errorHandler(err))
+    this.fetchMovies()
   }
 
   ngOnInit(): void {
+  }
+
+  onSubmit(ngForm: NgForm) {
+    const data = ngForm.form.getRawValue();
+    this.moviesService.addOne(data).then(() => this.fetchMovies()).catch((err) => this.errorHandler(err))
+  }
+
+  private fetchMovies() {
+    this.moviesService.getAll().then((res) => this.handleSuccess(res)).catch((err) => this.errorHandler(err))
   }
 
   private handleSuccess(res: Movie[]): void {

@@ -1,5 +1,13 @@
 <p>{{movie.title}}</p>
 <p>{{movie.poster}}</p>
-<p>{{movie.title}}</p>
+<p>{{movie.year}}</p>
 
 <button (click)="delete()">Delete</button>
+
+<form #updateMovieForm="ngForm" (ngSubmit)="updateOne(updateMovieForm)">
+    <input type="text" name="title" id="title" [(ngModel)]="movie.title" /><br />
+    <input type="text" name="poster" id="poster" [(ngModel)]="movie.poster" /><br />
+    <input type="number" name="year" id="year" [(ngModel)]="movie.year" /><br />
+
+    <button type="submit">Update Movie</button>
+</form>

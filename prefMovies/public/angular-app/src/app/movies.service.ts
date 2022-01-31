@@ -24,6 +24,11 @@ export class MoviesService {
     return this.http.delete(url).toPromise().catch(this.handleError)
   }
 
+  public addOne(data: Object): Promise<Movie> {
+    const url = `${this.#baseUrl}/movies`
+    return this.http.post(url, data).toPromise().catch(this.handleError)
+  }
+
   private handleError(err: any): any {
     return Promise.reject(err)
   }
